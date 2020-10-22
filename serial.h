@@ -1,6 +1,5 @@
 #ifndef SERIAL_H_
 #define SERIAL_H_
-#include <util/delay.h>
 
 void uart_init(void);
 
@@ -11,6 +10,6 @@ char uart_getchar(void);
 
 void uart_echo(void);
 
-void uart_getstr(void);
+void uart_getstr(char *buffer);
 
 #endif

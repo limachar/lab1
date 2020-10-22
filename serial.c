@@ -16,35 +16,34 @@ void uart_init(){
 }
 
 void uart_putchar(char chr){
-if(chr =='\n'){
-while (!(UCSR0A & (1 << UDRE0)));
-UDR0 = '\r';
-while (!(UCSR0A & (1 << UDRE0)));
-UDR0  = '\n';
-}
-else{
-while (!(UCSR0A & (1 << UDRE0)));
-UDR0 = chr;
-}
+    if(chr =='\n'){
+        while (!(UCSR0A & (1 << UDRE0)));
+        UDR0 = '\r';
+            while (!(UCSR0A & (1 << UDRE0)));
+            UDR0  = '\n';
+    }
+    else{
+        while (!(UCSR0A & (1 << UDRE0)));
+        UDR0 = chr;
+    }
 
 }
 
 char uart_getchar(){
-char chr;
-while(!(UCSR0A & (1<<RXC0)));
-chr = UDR0;
+    char chr;
+        while(!(UCSR0A & (1<<RXC0)));
+        chr = UDR0;
 return chr;
 }
 
 
 void uart_putstr(const char *str){
+    int i = 0;
 
-int i = 0;
-
-while(str[i] !='\0'){
-uart_putchar(str[i]);
-i++;
-}
+        while(str[i] !='\0'){
+            uart_putchar(str[i]);
+            i++;
+        }
 }
 
 
@@ -54,26 +53,20 @@ uart_putchar(uart_getchar());
 
 
 void uart_getstr(char *buffer){
-int i = 0;
-buffer[i] = uart_getchar();
+    int i = 0;
+    buffer[i] = uart_getchar(); 
 
-while(buffer[i] != '\n'){
-i++;
-buffer[i] = uart_getchar();
-}
-buffer[i] = '\r';
-i++;
-buffer[i] = '\n';
-buffer[i+1] = '\0';
-uart_putstr(buffer);
-
-if(strcmp(buffer, "ON\r\n") == 0){
-PORTB |= (1 << PB0);
-i = 0;
-}
-else if(strcmp(buffer, "OFF\r\n") == 0){
-PORTB &= ~(1 << PB0);
-i = 0;
-}
-
+        while((buffer[i] != '\r') & (buffer[i] !='\n')){ 
+            if(i<=47){
+                i++; 
+                buffer[i] = uart_getchar();
+            }
+            else{
+                buffer[i] = uart_getchar();
+            }
+        }
+    buffer[i] = '\r';
+    i++;
+    buffer[i] = '\n';
+    buffer[i+1] = '\0'; 
 }
