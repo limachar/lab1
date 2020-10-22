@@ -11,7 +11,5 @@ void led_state(char *buffer){
     else if(strcmp(buffer, "off\r\n") == 0){
         PORTB &= ~(1 << PB0);   
     }
-    else if(strcmp(buffer, "\r\n") == 0){
-        
-    }
+    else if(strcmp(buffer, "\r\n") == 0){ }
 }
