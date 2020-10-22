@@ -14,9 +14,7 @@ uart_init();
 uart_putstr(str);
 
     while(1){
-        uart_getstr(buffer);
-        uart_putstr(buffer);
-        led_state(buffer);
+       uart_echo();
     }
 
 }
